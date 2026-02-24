@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // ─── MOCK DATA ────────────────────────────────────────────────────────────────
 const INITIAL_EMPLOYEES = [
