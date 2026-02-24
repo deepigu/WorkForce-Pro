@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 // ─── LOGO ─────────────────────────────────────────────────────────────────────
 const Logo = ({ size = 36 }) => (
@@ -332,7 +332,7 @@ function Chat({ currentEmp, employees }) {
 
   const chatKey = (a,b) => [a,b].sort().join('_');
   const key = selected ? chatKey(currentEmp.id, selected.id) : null;
-  const msgs = key ? (messages[key]||[]) : [];
+  const msgs = useMemo(() => key ? (messages[key]||[]) : [], [key, messages]);
 
   const send = () => {
     if (!input.trim()||!selected) return;
@@ -547,7 +547,6 @@ function PayrollPDF({ emp }) {
     const gross = stmt.gross;
     const federal = gross * 0.22;
     const state = gross * 0.06;
-    const fica = gross * 0.0765;
     const net = stmt.net;
 
     const html = `<!DOCTYPE html><html>
@@ -972,7 +971,6 @@ function MgrTimeOffApproval({ employees, setEmployees, addNotification }) {
 function EmployeeApp({ emp, employees, setEmployees, onLogout, darkMode, setDarkMode, notifications, setNotifications, addNotification }) {
   const [tab, setTab] = useState('home');
   const currentEmp = employees.find(e=>e.id===emp.id)||emp;
-  const [adminPassword] = useState('admin2025');
 
   const tabs = [
     {id:'home',label:'Home',icon:'home',always:true},
